@@ -5,10 +5,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Icon from "@/components/ui/icon";
+import TopicView from "./TopicView";
 
 const ForumMain: React.FC = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [isRegistering, setIsRegistering] = useState(false);
+  const [selectedTopicId, setSelectedTopicId] = useState<number | null>(null);
 
   const vintageEmojis = [
     "😀",
@@ -95,6 +97,18 @@ const ForumMain: React.FC = () => {
     }, 1000);
   };
 
+  const handleTopicClick = (topicId: number) => {
+    setSelectedTopicId(topicId);
+  };
+
+  const handleBackToTopics = () => {
+    setSelectedTopicId(null);
+  };
+
+  if (selectedTopicId) {
+    return <TopicView topicId={selectedTopicId} onBack={handleBackToTopics} />;
+  }
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -121,6 +135,7 @@ const ForumMain: React.FC = () => {
                   <Card
                     key={topic.id}
                     className="hover:shadow-md transition-shadow cursor-pointer"
+                    onClick={() => handleTopicClick(topic.id)}
                   >
                     <CardContent className="p-4">
                       <div className="flex items-start justify-between">
